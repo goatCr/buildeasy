@@ -22,8 +22,8 @@ function ProjectEditor() {
   const [projectForm, setProjectForm] = useState({
     name: '',
     description: '',
-    theme_color: '#7c3aed',
-    font_family: 'Inter',
+    theme_color: '#e58a1f',
+    font_family: 'IBM Plex Mono',
     site_title: '',
     site_description: '',
     custom_domain: '',
@@ -55,8 +55,8 @@ function ProjectEditor() {
     setProjectForm({
       name: data.name || '',
       description: data.description || '',
-      theme_color: data.theme_color || '#7c3aed',
-      font_family: data.font_family || 'Inter',
+      theme_color: data.theme_color || '#e58a1f',
+      font_family: data.font_family || 'IBM Plex Mono',
       site_title: data.site_title || '',
       site_description: data.site_description || '',
       custom_domain: data.custom_domain || '',
@@ -100,7 +100,7 @@ function ProjectEditor() {
       .replace(/[^a-z0-9-]/g, '')
   }
 
-  async function handleSaveProject(customMessage = 'Project changes saved successfully!') {
+  async function handleSaveProject(customMessage = 'Project updated successfully.') {
     setSavingProject(true)
     setMessage('')
 
@@ -131,8 +131,8 @@ function ProjectEditor() {
       setProjectForm({
         name: data.name || '',
         description: data.description || '',
-        theme_color: data.theme_color || '#7c3aed',
-        font_family: data.font_family || 'Inter',
+        theme_color: data.theme_color || '#e58a1f',
+        font_family: data.font_family || 'IBM Plex Mono',
         site_title: data.site_title || '',
         site_description: data.site_description || '',
         custom_domain: data.custom_domain || '',
@@ -167,13 +167,11 @@ function ProjectEditor() {
     }
 
     const createdPage = data[0]
-    const updatedPages = [...pages, createdPage]
-
-    setPages(updatedPages)
+    setPages([...pages, createdPage])
     setSelectedPage(createdPage)
     setPageContent(createdPage.content || '')
     setNewPageName('')
-    setMessage('New page created successfully!')
+    setMessage('New page created successfully.')
   }
 
   async function handleDeletePage(pageId) {
@@ -200,7 +198,7 @@ function ProjectEditor() {
       }
     }
 
-    setMessage('Page deleted successfully!')
+    setMessage('Page deleted successfully.')
   }
 
   async function handleSavePage() {
@@ -218,14 +216,11 @@ function ProjectEditor() {
       setMessage('Failed to save page content.')
     } else {
       const updatedPages = pages.map((page) =>
-        page.id === selectedPage.id
-          ? { ...page, content: pageContent }
-          : page
+        page.id === selectedPage.id ? { ...page, content: pageContent } : page
       )
-
       setPages(updatedPages)
       setSelectedPage({ ...selectedPage, content: pageContent })
-      setMessage('Page content saved successfully!')
+      setMessage('Page content saved successfully.')
     }
 
     setSavingPage(false)
@@ -234,7 +229,7 @@ function ProjectEditor() {
   function renderPreview(content) {
     if (!content || !content.trim()) {
       return (
-        <p style={{ color: '#6b7280', lineHeight: '1.8' }}>
+        <p style={{ color: 'var(--text-muted)', lineHeight: '1.8' }}>
           Start typing content to see live preview here.
         </p>
       )
@@ -247,7 +242,7 @@ function ProjectEditor() {
     lines.forEach((line, index) => {
       if (line.startsWith('- ')) {
         listItems.push(
-          <li key={`li-${index}`} style={{ marginBottom: '0.5rem', color: '#374151' }}>
+          <li key={`li-${index}`} style={{ marginBottom: '0.5rem', color: '#33413e' }}>
             {line.replace('- ', '')}
           </li>
         )
@@ -265,19 +260,19 @@ function ProjectEditor() {
 
       if (line.startsWith('# ')) {
         elements.push(
-          <h1 key={index} style={{ fontSize: '2rem', marginBottom: '1rem', color: '#111827' }}>
+          <h1 key={index} style={{ fontSize: '2rem', marginBottom: '1rem', color: '#122220' }}>
             {line.replace('# ', '')}
           </h1>
         )
       } else if (line.startsWith('## ')) {
         elements.push(
-          <h2 key={index} style={{ fontSize: '1.4rem', marginBottom: '0.75rem', color: '#1f2937' }}>
+          <h2 key={index} style={{ fontSize: '1.4rem', marginBottom: '0.75rem', color: '#1d302d' }}>
             {line.replace('## ', '')}
           </h2>
         )
       } else {
         elements.push(
-          <p key={index} style={{ marginBottom: '1rem', color: '#374151', lineHeight: '1.8' }}>
+          <p key={index} style={{ marginBottom: '1rem', color: '#33413e', lineHeight: '1.8' }}>
             {line}
           </p>
         )
@@ -314,26 +309,34 @@ function ProjectEditor() {
       <div
         style={{
           minHeight: '100vh',
-          background: '#0a0a0a',
-          color: '#fff',
+          background: 'var(--bg)',
+          color: 'var(--text)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontFamily: 'Inter, sans-serif'
+          fontFamily: 'var(--font-sans)',
         }}
       >
-        Loading project editor...
+        Loading editor...
       </div>
     )
+  }
+
+  const panel = {
+    background: 'var(--bg-glass)',
+    border: '1px solid var(--border)',
+    borderRadius: '24px',
+    padding: '24px',
+    boxShadow: 'var(--shadow-soft)',
   }
 
   const inputStyle = {
     width: '100%',
     padding: '14px 16px',
-    background: '#1a1a1a',
-    border: '1px solid #2a2a2a',
-    borderRadius: '10px',
-    color: '#fff',
+    background: 'var(--bg-soft)',
+    border: '1px solid var(--border)',
+    borderRadius: 'var(--radius-md)',
+    color: 'var(--text)',
     fontSize: '0.95rem',
     boxSizing: 'border-box',
   }
@@ -342,14 +345,16 @@ function ProjectEditor() {
     <button
       onClick={() => setActiveTab(key)}
       style={{
-        background: activeTab === key ? projectForm.theme_color : 'transparent',
-        color: activeTab === key ? '#fff' : '#999',
-        border: activeTab === key ? `1px solid ${projectForm.theme_color}` : '1px solid #2a2a2a',
-        padding: '10px 16px',
-        borderRadius: '10px',
+        background: activeTab === key ? 'var(--accent)' : 'transparent',
+        color: activeTab === key ? 'var(--accent-contrast)' : 'var(--text-muted)',
+        border: activeTab === key
+          ? '1px solid var(--accent)'
+          : '1px solid var(--border)',
+        padding: '11px 16px',
+        borderRadius: 'var(--radius-md)',
         cursor: 'pointer',
         fontWeight: 600,
-        fontSize: '0.9rem',
+        fontSize: '0.92rem',
       }}
     >
       {label}
@@ -360,68 +365,90 @@ function ProjectEditor() {
     <div
       style={{
         minHeight: '100vh',
-        background: '#0a0a0a',
-        color: '#fff',
-        fontFamily: projectForm.font_family || 'Inter, sans-serif'
+        background: 'var(--hero-bg)',
+        color: 'var(--text)',
+        fontFamily: 'var(--font-sans)',
       }}
     >
       <nav
         style={{
+          height: '72px',
+          borderBottom: '1px solid var(--border-strong)',
+          background: 'rgba(18, 34, 32, 0.86)',
+          backdropFilter: 'blur(16px)',
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '0 2rem',
-          height: '64px',
-          borderBottom: '1px solid #1f1f1f',
-          background: '#0d0d0d',
+          justifyContent: 'space-between',
+          padding: '0 28px',
+          position: 'sticky',
+          top: 0,
+          zIndex: 20,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <span style={{ fontSize: '1.2rem' }}>⚡</span>
-          <span style={{ fontWeight: 700 }}>BuildEasy Editor</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 800 }}>
+          <span style={{ fontSize: '1.2rem', color: 'var(--accent)' }}>⚡</span>
+          <span>BuildEasy Editor</span>
         </div>
 
         <button
           onClick={() => navigate('/dashboard')}
           style={{
             background: 'transparent',
-            border: '1px solid #333',
-            color: '#ccc',
-            padding: '0.5rem 1rem',
-            borderRadius: '8px',
+            border: '1px solid var(--border-strong)',
+            color: 'var(--text)',
+            padding: '10px 14px',
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
           }}
         >
-          ← Back to Dashboard
+          ← Dashboard
         </button>
       </nav>
 
-      <main style={{ maxWidth: '1360px', margin: '0 auto', padding: '2rem' }}>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <h1 style={{ fontSize: '1.9rem', marginBottom: '0.4rem' }}>
+      <main style={{ maxWidth: '1360px', margin: '0 auto', padding: '32px 24px 56px' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <div
+            style={{
+              color: 'var(--accent)',
+              textTransform: 'uppercase',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              marginBottom: '8px',
+            }}
+          >
+            Project workspace
+          </div>
+          <h1 style={{ fontSize: '2.3rem', margin: '0 0 8px', letterSpacing: '-0.03em' }}>
             {projectForm.name || 'Untitled Project'}
           </h1>
-          <p style={{ color: '#777' }}>
-            Manage content, style, publishing, and project settings in one place.
+          <p style={{ color: 'var(--text-muted)', margin: 0, lineHeight: '1.7' }}>
+            Edit content, adjust styles, manage settings, and publish from one place.
           </p>
         </div>
 
         {message && (
           <div
             style={{
-              marginBottom: '1.25rem',
+              marginBottom: '18px',
               padding: '12px 14px',
-              borderRadius: '10px',
-              background: message.includes('Failed') ? '#2a1010' : '#0f2a1a',
-              border: message.includes('Failed') ? '1px solid #5a2020' : '1px solid #1a5a30',
-              color: message.includes('Failed') ? '#ff6b6b' : '#7ee787',
+              borderRadius: 'var(--radius-md)',
+              background: message.toLowerCase().includes('failed')
+                ? 'var(--error-bg)'
+                : 'var(--success-bg)',
+              border: message.toLowerCase().includes('failed')
+                ? '1px solid var(--error-border)'
+                : '1px solid var(--success-border)',
+              color: message.toLowerCase().includes('failed')
+                ? 'var(--error-text)'
+                : 'var(--success-text)',
             }}
           >
             {message}
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '24px' }}>
           {tabButton('overview', 'Overview')}
           {tabButton('pages', 'Pages')}
           {tabButton('design', 'Design')}
@@ -430,538 +457,556 @@ function ProjectEditor() {
           {tabButton('analytics', 'Analytics')}
         </div>
 
-        <div
-          style={{
-            background: '#111',
-            border: '1px solid #1f1f1f',
-            borderRadius: '20px',
-            padding: '2rem',
-          }}
-        >
-          {activeTab === 'overview' && (
-            <div style={{ maxWidth: '760px' }}>
-              <h2 style={{ marginBottom: '1rem' }}>Overview</h2>
+        {activeTab === 'overview' && (
+          <div style={panel}>
+            <div style={{ maxWidth: '760px', display: 'grid', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Project Name
+                </label>
+                <input
+                  type="text"
+                  value={projectForm.name}
+                  onChange={(e) => setProjectForm({ ...projectForm, name: e.target.value })}
+                  style={inputStyle}
+                />
+              </div>
 
-              <div style={{ display: 'grid', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Project Name
-                  </label>
-                  <input
-                    type="text"
-                    value={projectForm.name}
-                    onChange={(e) => setProjectForm({ ...projectForm, name: e.target.value })}
-                    style={inputStyle}
-                  />
-                </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Description
+                </label>
+                <textarea
+                  rows="5"
+                  value={projectForm.description}
+                  onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
+                  style={{ ...inputStyle, resize: 'vertical' }}
+                />
+              </div>
 
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Description
-                  </label>
-                  <textarea
-                    rows="5"
-                    value={projectForm.description}
-                    onChange={(e) => setProjectForm({ ...projectForm, description: e.target.value })}
-                    style={{ ...inputStyle, resize: 'vertical' }}
-                  />
-                </div>
-
-                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                  <div style={{ background: '#0d0d0d', padding: '1rem', borderRadius: '14px', border: '1px solid #1f1f1f', minWidth: '180px' }}>
-                    <div style={{ color: '#777', fontSize: '0.85rem' }}>Status</div>
-                    <div style={{ fontWeight: 700, marginTop: '0.25rem' }}>
-                      {projectForm.published ? 'Published' : 'Draft'}
-                    </div>
-                  </div>
-
-                  <div style={{ background: '#0d0d0d', padding: '1rem', borderRadius: '14px', border: '1px solid #1f1f1f', minWidth: '180px' }}>
-                    <div style={{ color: '#777', fontSize: '0.85rem' }}>Visibility</div>
-                    <div style={{ fontWeight: 700, marginTop: '0.25rem' }}>
-                      {projectForm.visibility}
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => handleSaveProject('Overview saved successfully!')}
-                  disabled={savingProject}
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                <div
                   style={{
-                    background: projectForm.theme_color,
-                    color: '#fff',
-                    border: 'none',
-                    padding: '14px 20px',
-                    borderRadius: '10px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    width: 'fit-content',
+                    background: 'var(--bg-elevated)',
+                    padding: '18px',
+                    borderRadius: '18px',
+                    border: '1px solid var(--border)',
+                    minWidth: '180px',
                   }}
                 >
-                  {savingProject ? 'Saving...' : 'Save Overview'}
-                </button>
-              </div>
-            </div>
-          )}
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Status</div>
+                  <div style={{ fontWeight: 800, marginTop: '6px' }}>
+                    {projectForm.published ? 'Published' : 'Draft'}
+                  </div>
+                </div>
 
-          {activeTab === 'pages' && (
-            <div>
-              <h2 style={{ marginBottom: '1rem' }}>Pages</h2>
-              <p style={{ color: '#888', marginBottom: '1.5rem' }}>
-                Create and manage pages with live content preview.
+                <div
+                  style={{
+                    background: 'var(--bg-elevated)',
+                    padding: '18px',
+                    borderRadius: '18px',
+                    border: '1px solid var(--border)',
+                    minWidth: '180px',
+                  }}
+                >
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Visibility</div>
+                  <div style={{ fontWeight: 800, marginTop: '6px' }}>{projectForm.visibility}</div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleSaveProject('Overview saved successfully.')}
+                disabled={savingProject}
+                style={{
+                  width: 'fit-content',
+                  background: 'var(--accent)',
+                  color: 'var(--accent-contrast)',
+                  border: 'none',
+                  padding: '14px 18px',
+                  borderRadius: '14px',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  boxShadow: 'var(--shadow-accent)',
+                }}
+              >
+                {savingProject ? 'Saving...' : 'Save Overview'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'pages' && (
+          <div style={panel}>
+            <div style={{ marginBottom: '18px' }}>
+              <h2 style={{ margin: '0 0 8px' }}>Pages</h2>
+              <p style={{ color: 'var(--text-muted)', margin: 0, lineHeight: '1.7' }}>
+                Manage pages and preview content live while editing.
               </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr 1fr', gap: '18px' }}>
+              <div
+                style={{
+                  background: 'var(--bg-elevated)',
+                  borderRadius: '20px',
+                  border: '1px solid var(--border)',
+                  padding: '18px',
+                }}
+              >
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+                  <input
+                    type="text"
+                    placeholder="New page name"
+                    value={newPageName}
+                    onChange={(e) => setNewPageName(e.target.value)}
+                    style={{ ...inputStyle, padding: '12px 14px' }}
+                  />
+                  <button
+                    onClick={handleAddPage}
+                    style={{
+                      background: 'var(--accent)',
+                      color: 'var(--accent-contrast)',
+                      border: 'none',
+                      padding: '12px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      cursor: 'pointer',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+
+                {pagesLoading ? (
+                  <p style={{ color: 'var(--text-muted)' }}>Loading pages...</p>
+                ) : pages.length === 0 ? (
+                  <p style={{ color: 'var(--text-muted)' }}>No pages yet.</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {pages.map((page) => (
+                      <div
+                        key={page.id}
+                        onClick={() => {
+                          setSelectedPage(page)
+                          setPageContent(page.content || '')
+                        }}
+                        style={{
+                          padding: '14px',
+                          borderRadius: '14px',
+                          border:
+                            selectedPage?.id === page.id
+                              ? '1px solid var(--accent)'
+                              : '1px solid var(--border)',
+                          background:
+                            selectedPage?.id === page.id
+                              ? 'rgba(229, 138, 31, 0.10)'
+                              : 'var(--bg-soft)',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+                          <div>
+                            <div style={{ fontWeight: 700 }}>{page.name}</div>
+                            <div
+                              style={{
+                                fontSize: '0.82rem',
+                                color: 'var(--text-muted)',
+                                marginTop: '4px',
+                              }}
+                            >
+                              /{page.slug}
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDeletePage(page.id)
+                            }}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: 'var(--text-muted)',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               <div
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: '280px 1fr 1fr',
-                  gap: '1.25rem'
+                  background: 'var(--bg-elevated)',
+                  borderRadius: '20px',
+                  border: '1px solid var(--border)',
+                  padding: '18px',
+                }}
+              >
+                {selectedPage ? (
+                  <>
+                    <div style={{ marginBottom: '14px' }}>
+                      <h3 style={{ margin: '0 0 6px' }}>{selectedPage.name}</h3>
+                      <p
+                        style={{
+                          color: 'var(--text-muted)',
+                          fontSize: '0.92rem',
+                          lineHeight: '1.7',
+                          margin: 0,
+                        }}
+                      >
+                        Use:
+                        <br /># Heading
+                        <br />## Subheading
+                        <br />- Bullet item
+                      </p>
+                    </div>
+
+                    <textarea
+                      value={pageContent}
+                      onChange={(e) => setPageContent(e.target.value)}
+                      placeholder="Write your page content here..."
+                      rows={18}
+                      style={{
+                        ...inputStyle,
+                        resize: 'vertical',
+                        marginBottom: '14px',
+                      }}
+                    />
+
+                    <button
+                      onClick={handleSavePage}
+                      disabled={savingPage}
+                      style={{
+                        background: 'var(--accent)',
+                        color: 'var(--accent-contrast)',
+                        border: 'none',
+                        padding: '12px 16px',
+                        borderRadius: 'var(--radius-md)',
+                        cursor: 'pointer',
+                        fontWeight: 700,
+                        boxShadow: 'var(--shadow-accent)',
+                      }}
+                    >
+                      {savingPage ? 'Saving...' : 'Save Page'}
+                    </button>
+                  </>
+                ) : (
+                  <div style={{ color: 'var(--text-muted)' }}>Select a page or create a new one.</div>
+                )}
+              </div>
+
+              <div
+                style={{
+                  background: '#f4efe6',
+                  borderRadius: '20px',
+                  border: '1px solid #d7c7ae',
+                  padding: '20px',
+                  minHeight: '520px',
+                  overflow: 'auto',
                 }}
               >
                 <div
                   style={{
-                    background: '#0d0d0d',
-                    border: '1px solid #1f1f1f',
-                    borderRadius: '16px',
-                    padding: '1rem'
-                  }}
-                >
-                  <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-                    <input
-                      type="text"
-                      placeholder="New page name"
-                      value={newPageName}
-                      onChange={(e) => setNewPageName(e.target.value)}
-                      style={{ ...inputStyle, padding: '10px 12px' }}
-                    />
-                    <button
-                      onClick={handleAddPage}
-                      style={{
-                        background: projectForm.theme_color,
-                        color: '#fff',
-                        border: 'none',
-                        padding: '10px 14px',
-                        borderRadius: '10px',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Add
-                    </button>
-                  </div>
-
-                  {pagesLoading ? (
-                    <p style={{ color: '#666' }}>Loading pages...</p>
-                  ) : pages.length === 0 ? (
-                    <p style={{ color: '#666' }}>No pages yet.</p>
-                  ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                      {pages.map((page) => (
-                        <div
-                          key={page.id}
-                          onClick={() => {
-                            setSelectedPage(page)
-                            setPageContent(page.content || '')
-                          }}
-                          style={{
-                            padding: '12px',
-                            borderRadius: '12px',
-                            border: selectedPage?.id === page.id
-                              ? `1px solid ${projectForm.theme_color}`
-                              : '1px solid #2a2a2a',
-                            background: selectedPage?.id === page.id ? '#1a0a2e' : '#111',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
-                            <div>
-                              <div style={{ fontWeight: 600 }}>{page.name}</div>
-                              <div style={{ fontSize: '0.8rem', color: '#777' }}>
-                                /{page.slug}
-                              </div>
-                            </div>
-
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                handleDeletePage(page.id)
-                              }}
-                              style={{
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#777',
-                                cursor: 'pointer',
-                              }}
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div
-                  style={{
-                    background: '#0d0d0d',
-                    border: '1px solid #1f1f1f',
-                    borderRadius: '16px',
-                    padding: '1rem'
-                  }}
-                >
-                  {selectedPage ? (
-                    <>
-                      <div style={{ marginBottom: '1rem' }}>
-                        <h3 style={{ marginBottom: '0.25rem' }}>{selectedPage.name}</h3>
-                        <p style={{ color: '#777', fontSize: '0.9rem' }}>
-                          Use simple formatting:
-                          <br /># Heading
-                          <br />## Subheading
-                          <br />- Bullet item
-                        </p>
-                      </div>
-
-                      <textarea
-                        value={pageContent}
-                        onChange={(e) => setPageContent(e.target.value)}
-                        placeholder="Write your page content here..."
-                        rows={18}
-                        style={{
-                          ...inputStyle,
-                          resize: 'vertical',
-                          marginBottom: '1rem',
-                          background: '#111'
-                        }}
-                      />
-
-                      <button
-                        onClick={handleSavePage}
-                        disabled={savingPage}
-                        style={{
-                          background: projectForm.theme_color,
-                          color: '#fff',
-                          border: 'none',
-                          padding: '12px 18px',
-                          borderRadius: '10px',
-                          cursor: 'pointer',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {savingPage ? 'Saving...' : 'Save Page'}
-                      </button>
-                    </>
-                  ) : (
-                    <div style={{ color: '#666' }}>
-                      Select a page from the left or create a new one.
-                    </div>
-                  )}
-                </div>
-
-                <div
-                  style={{
-                    background: '#f9fafb',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '16px',
-                    padding: '1.5rem',
-                    minHeight: '520px',
-                    overflow: 'auto'
+                    marginBottom: '14px',
+                    paddingBottom: '12px',
+                    borderBottom: '1px solid #d9cdbd',
                   }}
                 >
                   <div
                     style={{
-                      marginBottom: '1rem',
-                      paddingBottom: '0.75rem',
-                      borderBottom: '1px solid #e5e7eb'
+                      fontSize: '0.8rem',
+                      color: '#7d776d',
+                      marginBottom: '4px',
+                      fontWeight: 700,
                     }}
                   >
-                    <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.25rem' }}>
-                      LIVE PREVIEW
-                    </div>
-                    <div style={{ fontWeight: 700, color: '#111827' }}>
-                      {selectedPage ? selectedPage.name : 'No page selected'}
-                    </div>
+                    LIVE PREVIEW
                   </div>
-
-                  {renderPreview(pageContent)}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'design' && (
-            <div style={{ maxWidth: '760px' }}>
-              <h2 style={{ marginBottom: '1rem' }}>Design</h2>
-
-              <div style={{ display: 'grid', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Theme Color
-                  </label>
-                  <input
-                    type="color"
-                    value={projectForm.theme_color}
-                    onChange={(e) => setProjectForm({ ...projectForm, theme_color: e.target.value })}
-                    style={{ width: '100px', height: '50px', background: 'transparent', border: 'none' }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Font Family
-                  </label>
-                  <select
-                    value={projectForm.font_family}
-                    onChange={(e) => setProjectForm({ ...projectForm, font_family: e.target.value })}
-                    style={inputStyle}
-                  >
-                    <option value="Inter">Inter</option>
-                    <option value="Arial">Arial</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Poppins">Poppins</option>
-                  </select>
-                </div>
-
-                <div
-                  style={{
-                    background: '#0d0d0d',
-                    border: '1px solid #1f1f1f',
-                    borderRadius: '16px',
-                    padding: '1.5rem'
-                  }}
-                >
-                  <div style={{ marginBottom: '1rem', fontWeight: 700 }}>
-                    Design Preview
+                  <div style={{ fontWeight: 800, color: '#122220' }}>
+                    {selectedPage ? selectedPage.name : 'No page selected'}
                   </div>
-
-                  <button
-                    style={{
-                      background: projectForm.theme_color,
-                      color: '#fff',
-                      border: 'none',
-                      padding: '12px 18px',
-                      borderRadius: '10px',
-                      fontWeight: 600,
-                      fontFamily: projectForm.font_family,
-                    }}
-                  >
-                    Sample Button
-                  </button>
-
-                  <p
-                    style={{
-                      marginTop: '1rem',
-                      color: '#aaa',
-                      fontFamily: projectForm.font_family
-                    }}
-                  >
-                    This is how your project styling will appear on the published site.
-                  </p>
                 </div>
 
-                <button
-                  onClick={() => handleSaveProject('Design settings saved successfully!')}
-                  disabled={savingProject}
-                  style={{
-                    background: projectForm.theme_color,
-                    color: '#fff',
-                    border: 'none',
-                    padding: '14px 20px',
-                    borderRadius: '10px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    width: 'fit-content',
-                  }}
-                >
-                  {savingProject ? 'Saving...' : 'Save Design'}
-                </button>
+                {renderPreview(pageContent)}
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {activeTab === 'settings' && (
-            <div style={{ maxWidth: '800px' }}>
-              <h2 style={{ marginBottom: '1rem' }}>Settings</h2>
-
-              <div style={{ display: 'grid', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Site Title
-                  </label>
-                  <input
-                    type="text"
-                    value={projectForm.site_title}
-                    onChange={(e) => setProjectForm({ ...projectForm, site_title: e.target.value })}
-                    style={inputStyle}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Site Description
-                  </label>
-                  <textarea
-                    rows="4"
-                    value={projectForm.site_description}
-                    onChange={(e) => setProjectForm({ ...projectForm, site_description: e.target.value })}
-                    style={{ ...inputStyle, resize: 'vertical' }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Custom Domain
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="www.example.com"
-                    value={projectForm.custom_domain}
-                    onChange={(e) => setProjectForm({ ...projectForm, custom_domain: e.target.value })}
-                    style={inputStyle}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Visibility
-                  </label>
-                  <select
-                    value={projectForm.visibility}
-                    onChange={(e) => setProjectForm({ ...projectForm, visibility: e.target.value })}
-                    style={inputStyle}
-                  >
-                    <option value="private">Private</option>
-                    <option value="public">Public</option>
-                  </select>
-                </div>
-
-                <button
-                  onClick={() => handleSaveProject('Settings saved successfully!')}
-                  disabled={savingProject}
-                  style={{
-                    background: projectForm.theme_color,
-                    color: '#fff',
-                    border: 'none',
-                    padding: '14px 20px',
-                    borderRadius: '10px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    width: 'fit-content',
-                  }}
-                >
-                  {savingProject ? 'Saving...' : 'Save Settings'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'publish' && (
-            <div style={{ maxWidth: '800px' }}>
-              <h2 style={{ marginBottom: '1rem' }}>Publish</h2>
-
-              <div style={{ display: 'grid', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '8px', color: '#bbb' }}>
-                    Publish Slug
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="my-project"
-                    value={projectForm.publish_slug}
-                    onChange={(e) => setProjectForm({ ...projectForm, publish_slug: e.target.value })}
-                    style={inputStyle}
-                  />
-                </div>
-
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={projectForm.published}
-                    onChange={(e) => setProjectForm({ ...projectForm, published: e.target.checked })}
-                  />
-                  <span>Mark this project as published</span>
+        {activeTab === 'design' && (
+          <div style={panel}>
+            <div style={{ maxWidth: '760px', display: 'grid', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Theme Color
                 </label>
-
-                <div
-                  style={{
-                    background: '#0d0d0d',
-                    border: '1px solid #1f1f1f',
-                    borderRadius: '14px',
-                    padding: '1rem'
-                  }}
-                >
-                  <div style={{ color: '#777', fontSize: '0.85rem' }}>Public URL</div>
-                  <div style={{ marginTop: '0.35rem', fontWeight: 700 }}>
-                    {projectForm.publish_slug
-                      ? `http://localhost:5173/site/${createSlug(projectForm.publish_slug)}`
-                      : 'Set a publish slug first'}
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => handleSaveProject('Publish settings saved successfully!')}
-                  disabled={savingProject}
-                  style={{
-                    background: projectForm.theme_color,
-                    color: '#fff',
-                    border: 'none',
-                    padding: '14px 20px',
-                    borderRadius: '10px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    width: 'fit-content',
-                  }}
-                >
-                  {savingProject ? 'Saving...' : 'Save Publish Settings'}
-                </button>
+                <input
+                  type="color"
+                  value={projectForm.theme_color}
+                  onChange={(e) => setProjectForm({ ...projectForm, theme_color: e.target.value })}
+                  style={{ width: '100px', height: '52px', background: 'transparent', border: 'none' }}
+                />
               </div>
-            </div>
-          )}
 
-          {activeTab === 'analytics' && (
-            <div>
-              <h2 style={{ marginBottom: '1rem' }}>Analytics</h2>
-              <p style={{ color: '#888', marginBottom: '1.5rem' }}>
-                This gives your project a simple analytics snapshot inside the editor workspace, which matches the common builder pattern of keeping content and metrics close together. [web:121][web:126]
-              </p>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Font Family
+                </label>
+                <select
+                  value={projectForm.font_family}
+                  onChange={(e) => setProjectForm({ ...projectForm, font_family: e.target.value })}
+                  style={inputStyle}
+                >
+                  <option value="IBM Plex Mono">IBM Plex Mono</option>
+                  <option value="Courier New">Courier New</option>
+                  <option value="monospace">Monospace</option>
+                  <option value="Inter">Inter</option>
+                </select>
+              </div>
 
               <div
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                  gap: '1rem'
+                  background: 'var(--bg-elevated)',
+                  borderRadius: '20px',
+                  border: '1px solid var(--border)',
+                  padding: '20px',
                 }}
               >
-                <div style={{ background: '#0d0d0d', border: '1px solid #1f1f1f', borderRadius: '16px', padding: '1rem' }}>
-                  <div style={{ color: '#777', fontSize: '0.85rem' }}>Total Pages</div>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 700, marginTop: '0.3rem' }}>
-                    {analytics.totalPages}
-                  </div>
-                </div>
+                <div style={{ marginBottom: '12px', fontWeight: 800 }}>Design Preview</div>
+                <button
+                  style={{
+                    background: projectForm.theme_color,
+                    color: 'var(--accent-contrast)',
+                    border: 'none',
+                    padding: '12px 18px',
+                    borderRadius: 'var(--radius-md)',
+                    fontWeight: 700,
+                    fontFamily: projectForm.font_family,
+                  }}
+                >
+                  Sample Button
+                </button>
+                <p
+                  style={{
+                    marginTop: '14px',
+                    color: 'var(--text-muted)',
+                    lineHeight: '1.7',
+                    fontFamily: projectForm.font_family,
+                  }}
+                >
+                  This is how your selected color and font will feel on the published site.
+                </p>
+              </div>
 
-                <div style={{ background: '#0d0d0d', border: '1px solid #1f1f1f', borderRadius: '16px', padding: '1rem' }}>
-                  <div style={{ color: '#777', fontSize: '0.85rem' }}>Total Words</div>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 700, marginTop: '0.3rem' }}>
-                    {analytics.totalWords}
-                  </div>
-                </div>
+              <button
+                onClick={() => handleSaveProject('Design settings saved successfully.')}
+                disabled={savingProject}
+                style={{
+                  width: 'fit-content',
+                  background: 'var(--accent)',
+                  color: 'var(--accent-contrast)',
+                  border: 'none',
+                  padding: '14px 18px',
+                  borderRadius: '14px',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  boxShadow: 'var(--shadow-accent)',
+                }}
+              >
+                {savingProject ? 'Saving...' : 'Save Design'}
+              </button>
+            </div>
+          </div>
+        )}
 
-                <div style={{ background: '#0d0d0d', border: '1px solid #1f1f1f', borderRadius: '16px', padding: '1rem' }}>
-                  <div style={{ color: '#777', fontSize: '0.85rem' }}>Estimated Visits</div>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 700, marginTop: '0.3rem' }}>
-                    {analytics.estimatedVisits}
-                  </div>
-                </div>
+        {activeTab === 'settings' && (
+          <div style={panel}>
+            <div style={{ maxWidth: '800px', display: 'grid', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Site Title
+                </label>
+                <input
+                  type="text"
+                  value={projectForm.site_title}
+                  onChange={(e) => setProjectForm({ ...projectForm, site_title: e.target.value })}
+                  style={inputStyle}
+                />
+              </div>
 
-                <div style={{ background: '#0d0d0d', border: '1px solid #1f1f1f', borderRadius: '16px', padding: '1rem' }}>
-                  <div style={{ color: '#777', fontSize: '0.85rem' }}>Estimated Leads</div>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 700, marginTop: '0.3rem' }}>
-                    {analytics.estimatedLeads}
-                  </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Site Description
+                </label>
+                <textarea
+                  rows="4"
+                  value={projectForm.site_description}
+                  onChange={(e) => setProjectForm({ ...projectForm, site_description: e.target.value })}
+                  style={{ ...inputStyle, resize: 'vertical' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Custom Domain
+                </label>
+                <input
+                  type="text"
+                  placeholder="www.example.com"
+                  value={projectForm.custom_domain}
+                  onChange={(e) => setProjectForm({ ...projectForm, custom_domain: e.target.value })}
+                  style={inputStyle}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Visibility
+                </label>
+                <select
+                  value={projectForm.visibility}
+                  onChange={(e) => setProjectForm({ ...projectForm, visibility: e.target.value })}
+                  style={inputStyle}
+                >
+                  <option value="private">Private</option>
+                  <option value="public">Public</option>
+                </select>
+              </div>
+
+              <button
+                onClick={() => handleSaveProject('Settings saved successfully.')}
+                disabled={savingProject}
+                style={{
+                  width: 'fit-content',
+                  background: 'var(--accent)',
+                  color: 'var(--accent-contrast)',
+                  border: 'none',
+                  padding: '14px 18px',
+                  borderRadius: '14px',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  boxShadow: 'var(--shadow-accent)',
+                }}
+              >
+                {savingProject ? 'Saving...' : 'Save Settings'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'publish' && (
+          <div style={panel}>
+            <div style={{ maxWidth: '800px', display: 'grid', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-soft)' }}>
+                  Publish Slug
+                </label>
+                <input
+                  type="text"
+                  placeholder="my-project"
+                  value={projectForm.publish_slug}
+                  onChange={(e) => setProjectForm({ ...projectForm, publish_slug: e.target.value })}
+                  style={inputStyle}
+                />
+              </div>
+
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  cursor: 'pointer',
+                  color: 'var(--text)',
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={projectForm.published}
+                  onChange={(e) => setProjectForm({ ...projectForm, published: e.target.checked })}
+                />
+                <span>Mark this project as published</span>
+              </label>
+
+              <div
+                style={{
+                  background: 'var(--bg-elevated)',
+                  borderRadius: '18px',
+                  border: '1px solid var(--border)',
+                  padding: '18px',
+                }}
+              >
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Public URL</div>
+                <div style={{ marginTop: '8px', fontWeight: 800, color: 'var(--text)' }}>
+                  {projectForm.publish_slug
+                    ? `http://localhost:5173/site/${createSlug(projectForm.publish_slug)}`
+                    : 'Set a publish slug first'}
                 </div>
               </div>
+
+              <button
+                onClick={() => handleSaveProject('Publish settings saved successfully.')}
+                disabled={savingProject}
+                style={{
+                  width: 'fit-content',
+                  background: 'var(--accent)',
+                  color: 'var(--accent-contrast)',
+                  border: 'none',
+                  padding: '14px 18px',
+                  borderRadius: '14px',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  boxShadow: 'var(--shadow-accent)',
+                }}
+              >
+                {savingProject ? 'Saving...' : 'Save Publish Settings'}
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {activeTab === 'analytics' && (
+          <div style={panel}>
+            <div style={{ marginBottom: '18px' }}>
+              <h2 style={{ margin: '0 0 8px' }}>Analytics</h2>
+              <p style={{ color: 'var(--text-muted)', margin: 0, lineHeight: '1.7' }}>
+                A simple snapshot of your current project activity.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: '16px',
+              }}
+            >
+              {[
+                { label: 'Total Pages', value: analytics.totalPages },
+                { label: 'Total Words', value: analytics.totalWords },
+                { label: 'Estimated Visits', value: analytics.estimatedVisits },
+                { label: 'Estimated Leads', value: analytics.estimatedLeads },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    background: 'var(--bg-elevated)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '20px',
+                    padding: '20px',
+                  }}
+                >
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.88rem' }}>{item.label}</div>
+                  <div style={{ fontSize: '2rem', fontWeight: 800, marginTop: '8px' }}>{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   )
