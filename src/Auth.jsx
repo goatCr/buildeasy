@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from './supabase'
 import './Auth.css'
 
@@ -7,8 +8,9 @@ function Auth() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')   // ← ADDED THIS
+  const navigate = useNavigate()
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -21,7 +23,7 @@ function Auth() {
       if (error) {
         setError(error.message)
       } else {
-        setMessage('Logged in successfully! Redirecting...')
+        navigate('/dashboard')
       }
     } else {
       const { error } = await supabase.auth.signUp({ email, password })
@@ -48,7 +50,7 @@ function Auth() {
               type="email"
               placeholder="you@example.com"
               value={email}
-              onChange={function(e) { setEmail(e.target.value) }}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -58,7 +60,7 @@ function Auth() {
               type="password"
               placeholder="Min. 6 characters"
               value={password}
-              onChange={function(e) { setPassword(e.target.value) }}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
@@ -73,7 +75,7 @@ function Auth() {
 
         <p className="auth-switch">
           {isLogin ? "Don't have an account? " : 'Already have an account? '}
-          <button onClick={function() { setIsLogin(!isLogin); setError(''); setMessage('') }}>
+          <button onClick={() => { setIsLogin(!isLogin); setError(''); setMessage('') }}>
             {isLogin ? 'Sign up free' : 'Sign in'}
           </button>
         </p>

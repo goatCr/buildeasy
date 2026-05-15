@@ -1,49 +1,59 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import Auth from './Auth'
+import Dashboard from './Dashboard'
+import ProtectedRoute from './ProtectedRoute'
+import ProjectEditor from './ProjectEditor'
+import PublishedSite from './PublishedSite'
 import './App.css'
 
-function App() {
-  const [menuOpen, setMenuOpen] = useState(false)
-
+function Home() {
   const features = [
-    { icon: '🎨', title: 'Drag & Drop Editor', desc: 'Build layouts by dragging 50+ pre-built components — navbars, cards, forms and more.' },
+    { icon: '🎨', title: 'Drag & Drop Editor', desc: 'Build layouts by dragging 50+ pre-built components – navbars, cards, forms and more.' },
     { icon: '⚡', title: 'AI Layout Generator', desc: 'Describe your app in plain English and AI instantly creates a starter layout for you.' },
     { icon: '📱', title: 'Responsive by Default', desc: 'Every site auto-adapts to mobile, tablet and desktop. Preview any screen size in real time.' },
-    { icon: '🔌', title: 'One-Click Integrations', desc: 'Connect Razorpay, Google Sheets, Mailchimp — zero code required.' },
+    { icon: '🔌', title: 'One-Click Integrations', desc: 'Connect Razorpay, Google Sheets, Mailchimp – zero code required.' },
     { icon: '🚀', title: 'Instant Deployment', desc: 'Publish with one click. Free subdomain, custom domain support, SSL included.' },
     { icon: '🧩', title: 'Custom Code Support', desc: 'Drop raw HTML, CSS or JavaScript into any component when you need more control.' },
   ]
 
   const steps = [
-    { icon: '✍️', step: '01', title: 'Describe your idea', desc: 'Tell us what you want to build in plain English.' },
-    { icon: '🏗️', step: '02', title: 'Customize the design', desc: 'Drag components, pick colors, adjust layouts visually.' },
+    { icon: '✏️', step: '01', title: 'Describe your idea', desc: 'Tell us what you want to build in plain English.' },
+    { icon: '🗺️', step: '02', title: 'Customize the design', desc: 'Drag components, pick colors, adjust layouts visually.' },
     { icon: '🔗', step: '03', title: 'Connect your data', desc: 'Plug in your database, forms or payment integrations.' },
-    { icon: '🌍', step: '04', title: 'Publish and share', desc: 'Go live instantly with a free domain and global CDN.' },
+    { icon: '🌐', step: '04', title: 'Publish and share', desc: 'Go live instantly with a free domain and global CDN.' },
   ]
 
   return (
     <div className="app">
-
       <nav className="nav">
         <div className="nav-logo">⚡ BuildEasy</div>
+
         <ul className="nav-links">
           <li><a href="#features">Features</a></li>
           <li><a href="#how">How it works</a></li>
           <li><a href="#pricing">Pricing</a></li>
         </ul>
+
         <div className="nav-actions">
-          <a href="#" className="btn btn-ghost">Sign in</a>
-          <a href="#pricing" className="btn btn-primary">Start free</a>
+          <Link to="/auth" className="btn btn-ghost">Sign in</Link>
+          <Link to="/auth" className="btn btn-primary">Start free</Link>
         </div>
       </nav>
 
       <section className="hero">
         <div className="hero-badge">🚀 Now in public beta</div>
-        <h1>Build apps and websites <span className="highlight">without code</span></h1>
-        <p>Drag. Drop. Launch. Create a fully custom website or app in minutes — no coding skills required.</p>
+        <h1>
+          Build apps and websites <span className="highlight">without code</span>
+        </h1>
+        <p>
+          Drag. Drop. Launch. Create a fully custom website or app in minutes – no coding skills required.
+        </p>
+
         <div className="hero-cta">
-          <a href="#pricing" className="btn btn-primary btn-lg">Start building for free</a>
+          <Link to="/auth" className="btn btn-primary btn-lg">Start building for free</Link>
           <a href="#how" className="btn btn-outline btn-lg">Watch demo</a>
         </div>
+
         <div className="hero-proof">
           <div className="avatars">
             <span className="av av1">SJ</span>
@@ -57,40 +67,41 @@ function App() {
       <section className="section" id="features">
         <div className="section-label">Everything you need</div>
         <h2>Built for builders, not coders</h2>
-        <p className="section-sub">From landing pages to full apps — go from idea to live product in one afternoon.</p>
+        <p className="section-sub">
+          From landing pages to full apps – go from idea to live product in one afternoon.
+        </p>
+
         <div className="features-grid">
-          {features.map(function(f, i) {
-            return (
-              <div className="feature-card" key={i}>
-                <div className="feature-icon">{f.icon}</div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-              </div>
-            )
-          })}
+          {features.map((f, i) => (
+            <div className="feature-card" key={i}>
+              <div className="feature-icon">{f.icon}</div>
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="section how-section" id="how">
         <div className="section-label">Simple process</div>
         <h2>From idea to live in 4 steps</h2>
+
         <div className="steps-grid">
-          {steps.map(function(s, i) {
-            return (
-              <div className="step" key={i}>
-                <div className="step-num">{s.step}</div>
-                <div className="step-icon">{s.icon}</div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-              </div>
-            )
-          })}
+          {steps.map((s, i) => (
+            <div className="step" key={i}>
+              <div className="step-num">{s.step}</div>
+              <div className="step-icon">{s.icon}</div>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="section" id="pricing">
         <div className="section-label">Simple pricing</div>
         <h2>Start free, scale as you grow</h2>
+
         <div className="pricing-grid">
           <div className="pricing-card">
             <div className="plan-name">Free</div>
@@ -101,8 +112,9 @@ function App() {
               <li>✓ 50+ components</li>
               <li>✓ Community support</li>
             </ul>
-            <a href="#" className="btn btn-outline plan-btn">Get started free</a>
+            <Link to="/auth" className="btn btn-outline plan-btn">Get started free</Link>
           </div>
+
           <div className="pricing-card featured">
             <div className="popular-badge">Most Popular</div>
             <div className="plan-name">Pro</div>
@@ -114,8 +126,9 @@ function App() {
               <li>✓ Razorpay payments</li>
               <li>✓ Priority support</li>
             </ul>
-            <a href="#" className="btn btn-white plan-btn">Start Pro trial</a>
+            <Link to="/auth" className="btn btn-white plan-btn">Start Pro trial</Link>
           </div>
+
           <div className="pricing-card">
             <div className="plan-name">Team</div>
             <div className="plan-price">₹2,499 <span>/month</span></div>
@@ -125,7 +138,7 @@ function App() {
               <li>✓ White-label export</li>
               <li>✓ Dedicated support</li>
             </ul>
-            <a href="#" className="btn btn-outline plan-btn">Contact sales</a>
+            <Link to="/auth" className="btn btn-outline plan-btn">Contact sales</Link>
           </div>
         </div>
       </section>
@@ -135,9 +148,37 @@ function App() {
         <p>The simplest way to build and launch custom websites and apps.</p>
         <p className="footer-copy">© 2026 BuildEasy. Made with love in Lucknow, India 🇮🇳</p>
       </footer>
-
     </div>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/auth" element={<Auth />} />
+
+        <Route path="/site/:slug/:pageSlug?" element={<PublishedSite />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/project/:id"
+          element={
+            <ProtectedRoute>
+              <ProjectEditor />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  )
+}
